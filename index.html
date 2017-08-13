@@ -74,7 +74,7 @@
         <div class="col-xs-12 text-center">
           <h1>{{full.group_name}} Ranking</h1>
           <p>
-            Total: <strong>{{full.growth.total_member_count}}</strong> members, <strong>{{full.growth.pending_member_current_count}}</strong> pending members, <strong>{{full.engagement.active_member_count}}</strong> active member, <strong>{{full.engagement.total_post_count}}</strong> posts, <strong>{{full.engagement.total_comment_count}}</strong> comments and <strong>{{full.engagement.total_like_count}}</strong> reactions. Updated at: {{full?dateFormat(new Date(full.last_update*1000)):""}}
+            Total: <strong>{{full.growth.total_member_count}}</strong> members, <strong>{{full.engagement.active_member_count}}</strong> active member, <strong>{{full.growth.pending_member_current_count}}</strong> pending members, <strong>{{full.engagement.total_post_count}}</strong> posts, <strong>{{full.pending_posts}}</strong> pending posts, <strong>{{full.engagement.total_comment_count}}</strong> comments and <strong>{{full.engagement.total_like_count}}</strong> reactions. Updated at: {{full?dateFormat(new Date(full.last_update*1000)):""}}
           </p>
         </div>
       </div>

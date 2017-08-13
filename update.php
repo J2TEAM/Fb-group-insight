@@ -52,10 +52,14 @@ function getData($gid, $doc_id, $start_time, $end_time, $fb_dtsg, $headers) {
 	return request("https://www.facebook.com/api/graphql/", $headers, $post_data, 1);
 }
 
-function getGroupName($gid, $headers) {
+function getGroupInfo($gid, $headers) {
 	$html = request("https://www.facebook.com/groups/".$gid, $headers);
 	$group_name = preg_match('/<title id="pageTitle">(.+?)<\/title>/', $html, $matches);
-	return $group_name?$matches[1]:0;
+	$pending_posts = preg_match('/\/pending\/">([0-9]+)/', $html, $matches1);
+	return [
+		"group_name" => $group_name?$matches[1]:0,
+		"pending_posts" => $pending_posts?$matches1[1]:0
+	];
 }
 
 function doAll($gid, $cookie) {
@@ -68,9 +72,12 @@ function doAll($gid, $cookie) {
 		$fb_dtsg = getFbDtsg($headers);
 		if (!$fb_dtsg) return 0;
 		$full = [];
-		$group_name = getGroupName($gid, $headers);
+		$info = getGroupInfo($gid, $headers);
+		$group_name = $info['group_name'];
+		$pending_posts = $info['pending_posts'];
 		if (!$group_name) return 0;
 		$full['group_name'] = $group_name;
+		$full['pending_posts'] = $pending_posts;
 		// $f = fopen($gid.".json", "w");
 		foreach ($GLOBALS['DOC_IDS'] as $doc_name => $doc_id) {
 			$data = getData($gid, $doc_id, time()-$GLOBALS['ONE_DAY']*30, time(), $fb_dtsg, $headers);
