@@ -2,49 +2,58 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
+    <!-- Your image links below -->
+    <meta property="og:image" content="https://i.imgur.com/mdSSfuQ.png">
+    <meta name="twitter:image:src" content="https://i.imgur.com/mdSSfuQ.png">
+    <meta itemprop="image" content="https://i.imgur.com/mdSSfuQ.png">
+    <!--  -->
+    
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     
+    <meta http-equiv="cache-control" content="max-age=0" />
+    <meta http-equiv="cache-control" content="no-cache" />
+    <meta http-equiv="expires" content="0" />
+    <meta http-equiv="expires" content="Tue, 01 Jan 1980 1:00:00 GMT" />
+    <meta http-equiv="pragma" content="no-cache" />
+
     <meta http-equiv="content-type" content="text/html; charset=UTF-8">
-    <meta http-equiv="cache-control" content="cache">
     <meta http-equiv="content-language" content="en">
     <meta http-equiv="revisit-after" content="1 days">
 
-    <meta name="keywords" content="juno_okyo,j2team,j2team community,ranking">
-    <meta name="description" content="Top active members in J2TeaM Community from last 30 days">
+    <!-- <meta name="keywords" content="juno_okyo,j2team,j2team community,ranking"> -->
+    <!-- <meta name="description" content="Top active members in J2TeaM Community from last 30 days"> -->
     <meta name="author" content="Juno_okyo">
     <meta name="copyright" content="Juno_okyo">
     <meta name="generator" content="Juno_okyo">
     <meta name="robots" content="index, follow">
 
-    <meta property="og:title" content="J2TeaM Community Ranking">
-    <meta property="og:description" content="Top active members in J2TeaM Community from last 30 days">
-    <meta property="og:url" content="http://code.junookyo.xyz/apps/j2team-community-ranking/index.php">
+    <meta property="og:title" content="Community Ranking by J2TeaM">
+    <!-- <meta property="og:description" content="Top active members in J2TeaM Community from last 30 days"> -->
+    <!-- <meta property="og:url" content="http://code.junookyo.xyz/apps/j2team-community-ranking/index.php"> -->
     <meta property="og:type" content="website">
-    <meta property="og:image" content="https://i.imgur.com/mdSSfuQ.png">
-    <meta property="og:site_name" content="J2TeaM Community Ranking">
+
+    <meta property="og:site_name" content="Community Ranking">
     <meta property="og:locale" content="vi_VN">
-    <meta property="fb:admins" content="100003880469096">
-    <meta property="fb:app_id" content="458084867627529">
+    <!-- <meta property="fb:admins" content="100003880469096"> -->
+    <!-- <meta property="fb:app_id" content="458084867627529"> -->
 
-    <meta name="twitter:card" content="summary">
-    <meta name="twitter:site" content="J2TeaM Community Ranking">
-    <meta name="twitter:title" content="J2TeaM Community Ranking">
-    <meta name="twitter:description" content="Top active members in J2TeaM Community from last 30 days">
-    <meta name="twitter:image:src" content="https://i.imgur.com/mdSSfuQ.png">
+    <!-- <meta name="twitter:card" content="summary"> -->
+    <!-- <meta name="twitter:site" content="J2TeaM Community Ranking"> -->
+    <!-- <meta name="twitter:title" content="J2TeaM Community Ranking"> -->
+    <!-- <meta name="twitter:description" content="Top active members in J2TeaM Community from last 30 days"> -->
     <meta name="twitter:creator" content="@juno_okyos">
-    <meta name="twitter:url" content="http://code.junookyo.xyz/apps/j2team-community-ranking/index.php">
+    <!-- <meta name="twitter:url" content="http://code.junookyo.xyz/apps/j2team-community-ranking/index.php"> -->
 
-    <meta itemprop="name" content="J2TeaM Community Ranking">
-    <meta itemprop="description" content="Top active members in J2TeaM Community from last 30 days">
-    <meta itemprop="image" content="https://i.imgur.com/mdSSfuQ.png">
+    <meta itemprop="name" content="Community Ranking">
+    <meta itemprop="description" content="Top active members from last 30 days">
 
     <title>J2TeaM Community Ranking</title>
 
     <link rel="author" href="https://plus.google.com/u/0/108443613096446306111/">
     <link rel="publisher" href="https://plus.google.com/u/0/108443613096446306111/">
-    <link rel="canonical" href="http://code.junookyo.xyz/apps/j2team-community-ranking/index.php">
+    <!-- <link rel="canonical" href="http://code.junookyo.xyz/apps/j2team-community-ranking/index.php"> -->
 
     <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
 
@@ -109,17 +118,6 @@
         </div>
 
         <div class="col-xs-12 col-md-6">
-          <!-- <div class="row">
-            <div class="col-md-12">
-              <div class="panel panel-primary">
-                <div class="panel-heading">
-                  <h3 class="panel-title">Member join sources</h3>
-                </div>
-                <div id="memberJoinSourceChart" style="width: 100%;"></div>
-              </div>
-            </div>
-          </div> -->
-
           <div class="row">
             <div class="col-md-12">
               <div class="panel panel-primary">
@@ -134,23 +132,15 @@
                       <th class="text-center">Posts</th>
                       <th class="text-center">Likes</th>
                       <th class="text-center">Comments</th>
-                      <!-- <th class="text-center">Comments</th> -->
-                      <!-- <th class="text-center">Reactions</th> -->
-                      <!-- <th class="text-center">Shares</th> -->
-                      <!-- <th class="text-center">Spams</th> -->
                     </tr>
                   </thead>
                   <tbody>
                     <tr v-for="(member, index) in full.member.top_contributors_breakdown">
                       <td class="text-center"><img :src="`./assets/images/${index<=6?badges[index]:badges[7]}`" :alt="`Rank #${index+1}`" :title="`Rank #${index+1}`" width="32px" height="32px"></td>
-                      <td><img class="profile-picture" :src="member.user.profile_picture.uri" alt="profile-picture" width="32px" height="32px"> <a href="https://www.facebook.com/profile.php?id=100003880469096" target="_blank" v-text="member.user.name"></a></td>
+                      <td><img class="profile-picture" :src="member.user.profile_picture.uri" alt="profile-picture" width="32px" height="32px"> <a :href="member.user.url" target="_blank" v-text="member.user.name"></a></td>
                       <td class="text-center" v-text="member.post_count"></td>
                       <td class="text-center" v-text="member.like_count"></td>
                       <td class="text-center" v-text="member.comment_count"></td>
-                      <!-- <td class="text-center">123</td>
-                      <td class="text-center">202</td>
-                      <td class="text-center">7</td> -->
-                      <!-- <td class="text-center">0</td> -->
                     </tr>
                   </tbody>
                 </table>
