@@ -18,14 +18,12 @@ rankData = new Vue({
   methods: {
     getData() {
       fetch("./full.json")
-      .then(resp => {
-        return resp.json()
-      })
-      .then(json => {
-        this.full = json;
-        this.drawChart();
-        this.shouldDrawChart = true;
-      });
+        .then(resp => resp.json())
+        .then(json => {
+          this.full = json;
+          this.drawChart();
+          this.shouldDrawChart = true;
+        });
     },
     dateFormat(date) {
       d = date.getDate()
@@ -49,21 +47,23 @@ rankData = new Vue({
             width: '84%',
             height: '75%',
           },
-          animation:{
+          animation: {
             duration: 800,
             easing: 'out',
             startup: true
           },
-          legend: {position: 'none'},
+          legend: {
+            position: 'none'
+          },
           axisTitlesPosition: 'none',
           colors: ["#2980b9"]
         }
         let table = [
-          ['Timestamp', 'Members'/*, { role: 'style' }*/]
+          ['Timestamp', 'Members' /*, { role: 'style' }*/ ]
         ];
 
         this.full.engagement.daily_active_member_count.forEach((day, index) => {
-          table.push([new Date(day.time*1000), day.value/*, colors1[index%colors1.length]*/]);
+          table.push([new Date(day.time * 1000), day.value /*, colors1[index%colors1.length]*/ ]);
         });
 
         let data = google.visualization.arrayToDataTable(table);
@@ -77,11 +77,13 @@ rankData = new Vue({
         let weekly_activity = this.full.engagement.weekly_activity_breakdown;
 
         let table2 = [
-          ["Source", "Amount", { role: 'style' }]
+          ["Source", "Amount", {
+            role: 'style'
+          }]
         ];
 
         weekly_activity.forEach((source, index) => {
-          table2.push([source.name, source.value, colors[index%colors.length]]);
+          table2.push([source.name, source.value, colors[index % colors.length]]);
         });
         // console.log(table2);
         let data2 = google.visualization.arrayToDataTable(table2);
@@ -111,7 +113,9 @@ rankData = new Vue({
   mounted() {
     this.getData();
     this.google = google;
-    this.google.charts.load('current', {packages: ['corechart', 'bar']});
+    this.google.charts.load('current', {
+      packages: ['corechart', 'bar']
+    });
     this.google.charts.setOnLoadCallback(() => {
       this.drawChart();
       this.shouldDrawChart = true;
