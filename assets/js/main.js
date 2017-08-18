@@ -27,7 +27,7 @@ rankData = new Vue({
     },
     dateFormat(date) {
       d = date.getDate()
-      m = date.getMonth()
+      m = date.getMonth()+1
       y = date.getFullYear()
       h = date.getHours()
       mi = date.getMinutes()
