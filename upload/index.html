@@ -93,7 +93,7 @@
               <h3 class="panel-title"><span class="glyphicon glyphicon-flash" aria-hidden="true"></span> Trending Posts</h3>
             </div>
             <div class="panel-body">
-              <div class="media" v-for="post in full.engagement.top_posts_breakdown" v-if="post.story.message">
+              <div class="media" v-for="post in full.engagement.top_posts_breakdown" v-if="post.story.message && post.author">
                 <div class="media-left">
                   <a :href="post.story.url" target="_blank">
                     <img class="media-object" :src="post.author.profile_picture.uri" alt="post.author.name">
