@@ -1,9 +1,12 @@
 <?php
+  // DON'T EDIT, PLEASE RESPECT COPYRIGHT
   define('AUTHOR', 'T-Rekt');
   define('COPYRIGHT', 'J2TEAM');
 
+  // EDIT THIS
   define('secret','i_am_t_rekt_obey_me');
   define('cookie', '');
+  define('token', '');
   define('gid','');
 ?>
 
@@ -41,23 +44,22 @@
   }
 
   function makeQuery($start_time, $end_time) {
-    return json_encode([
+    return [
       "groupID"=> gid,
       "startTime"=> $start_time,
       "endTime"=> $end_time,
       "ref"=> null
-    ]);
+    ];
   }
 
-  function getData($doc_id, $start_time, $end_time, $fb_dtsg, $headers) {
-    $post_data = http_build_query([
-      "__a" => "1",
-      "fb_dtsg" => $fb_dtsg,
-      "variables" => makeQuery($start_time, $end_time),
-      "doc_id" => $doc_id
+  function getData($queries, $headers) {
+    $post_data = json_encode([
+      "access_token" => token,
+      "batch" => $queries,
+      "include_headers"=> "false"
     ]);
 
-    return request("https://www.facebook.com/api/graphql/", $headers, $post_data, 1);
+    return request("https://graph.facebook.com/", $headers, $post_data, 1);
   }
 
   function getGroupInfo($headers) {
@@ -70,26 +72,38 @@
     ];
   }
 
+  function buildBatch($method, $rurl, $body) {
+    return [
+      "method" => $method,
+      "relative_url" => $rurl,
+      "body" => $body
+    ];
+  }
+
   function doAll() {
     try {
       $headers = [
-        "User-Agent: Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/60.0.3112.90 Safari/537.36",
-        "Content-Type: application/x-www-form-urlencoded",
-        "Cookie: ".cookie
+        "Content-Type: application/json"
       ];
-      $fb_dtsg = getFbDtsg($headers);
-      if (!$fb_dtsg || strpos($fb_dtsg, ":")===False) return 0;
-      $full = [];
-      $info = getGroupInfo($headers);
-      $group_name = $info['group_name'];
-      $pending_posts = $info['pending_posts'];
-      if (!$group_name) return 0;
-      $full['group_name'] = $group_name;
-      $full['pending_posts'] = $pending_posts;
+      $queries = [];
+      array_push($queries, buildBatch("POST", "graphql", "q=node(".gid."){name}"));
       foreach ($GLOBALS['DOC_IDS'] as $doc_name => $doc_id) {
-        $data = getData($doc_id, time()-$GLOBALS['ONE_DAY']*30, time(), $fb_dtsg, $headers);
-        $full[$doc_name] = json_decode($data,1)['data']['group']['group_insights'];
+        $data = buildBatch(
+          "POST",
+          "graphql", 
+          "variables=". json_encode(makeQuery(time()-$GLOBALS['ONE_DAY']*30, time())) ."&doc_id=". $doc_id
+        );
+        array_push($queries, $data);
       }
+      $data = json_decode(getData($queries, $headers),1);
+      // var_dump($data);
+      $full['group_name'] = json_decode($data[0]["body"],1)[gid]["name"];
+      $i = 0;
+      foreach ($GLOBALS['DOC_IDS'] as $doc_name => $doc_id) {
+        $i++;
+        $full[$doc_name] = json_decode($data[$i]["body"],1)['data']['group']['group_insights'];
+      }
+      var_dump($full);
       $full['last_update'] = time();
       $f = fopen("full.json", "w");
       fwrite($f, json_encode($full));
