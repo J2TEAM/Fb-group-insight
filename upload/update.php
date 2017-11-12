@@ -5,7 +5,6 @@
 
   // EDIT THIS
   define('secret','i_am_t_rekt_obey_me');
-  define('cookie', '');
   define('token', '');
   define('gid','');
 ?>
@@ -37,12 +36,6 @@
     return $d;
   }
 
-  function getFbDtsg($headers) {
-    $html = request("https://www.facebook.com/", $headers);
-    $fb_dtsg = preg_match('/DTSGInitialData.+?:"(.+?)"/', $html, $matches);
-    return $fb_dtsg?$matches[1]:0;
-  }
-
   function makeQuery($start_time, $end_time) {
     return [
       "groupID"=> gid,
@@ -60,16 +53,6 @@
     ]);
 
     return request("https://graph.facebook.com/", $headers, $post_data, 1);
-  }
-
-  function getGroupInfo($headers) {
-    $html = request("https://www.facebook.com/groups/".gid, $headers);
-    $group_name = preg_match('/<title id="pageTitle">(.+?)<\/title>/', $html, $matches);
-    $pending_posts = preg_match('/\/pending\/">([0-9]+)/', $html, $matches1);
-    return [
-      "group_name" => $group_name?$matches[1]:0,
-      "pending_posts" => $pending_posts?$matches1[1]:0
-    ];
   }
 
   function buildBatch($method, $rurl, $body) {
@@ -96,7 +79,6 @@
         array_push($queries, $data);
       }
       $data = json_decode(getData($queries, $headers),1);
-      // var_dump($data);
       $full['group_name'] = json_decode($data[0]["body"],1)[gid]["name"];
       $i = 0;
       foreach ($GLOBALS['DOC_IDS'] as $doc_name => $doc_id) {
