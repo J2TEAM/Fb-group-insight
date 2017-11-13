@@ -97,6 +97,8 @@
         'total_comment_count' => $full['engagement']['total_comment_count'],
         'total_post_count' => $full['engagement']['total_post_count'],
         'total_like_count' => $full['engagement']['total_like_count'],
+        'daily_active_member_count' => $full['engagement']['daily_active_member_count'],
+        'weekly_activity_breakdown' => $full['engagement']['weekly_activity_breakdown']
       ];
       //
 
