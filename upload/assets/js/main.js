@@ -17,7 +17,7 @@ rankData = new Vue({
   },
   methods: {
     getData() {
-      fetch("./full.json")
+      fetch("./update.php?action=getData")
         .then(resp => resp.json())
         .then(json => {
           this.full = json;

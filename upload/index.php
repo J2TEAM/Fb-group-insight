@@ -1,3 +1,107 @@
+<?php
+  // DON'T EDIT, PLEASE RESPECT COPYRIGHT
+  define('AUTHOR', 'T-Rekt');
+  define('COPYRIGHT', 'J2TEAM');
+
+  // EDIT THIS
+  define('token', '');
+  define('gid', '');
+?>
+
+<?php
+  $GLOBALS['ONE_DAY'] = 60*60*24;
+  $GLOBALS['DOC_IDS'] = [
+    "engagement" => "1470044149684839",
+    "member" => "1554851827859432",
+    "growth" => "1761498670534891",
+    "highlights" => "1378499845591554"
+  ];
+
+  function request($url = '', $headers = [] , $params = [], $post = 0)    {
+    $c = curl_init();
+    $opts = [
+      CURLOPT_URL => $url.(!$post && $params ? '?'.http_build_query($params) : ''),
+      CURLOPT_RETURNTRANSFER => true,
+      CURLOPT_HTTPHEADER =>  $headers,
+      CURLOPT_SSL_VERIFYPEER => false
+    ];
+    if($post){
+      $opts[CURLOPT_POST] = true;
+      $opts[CURLOPT_POSTFIELDS] = $params;
+    }
+    curl_setopt_array($c, $opts);
+    $d = curl_exec($c);
+    curl_close($c);
+    return $d;
+  }
+
+  function makeQuery($start_time, $end_time) {
+    return [
+      "groupID"=> gid,
+      "startTime"=> $start_time,
+      "endTime"=> $end_time,
+      "ref"=> null
+    ];
+  }
+
+  function getData($queries, $headers) {
+    $post_data = json_encode([
+      "access_token" => token,
+      "batch" => $queries,
+      "include_headers"=> "false"
+    ]);
+
+    return request("https://graph.facebook.com/", $headers, $post_data, 1);
+  }
+
+  function buildBatch($method, $rurl, $body) {
+    return [
+      "method" => $method,
+      "relative_url" => $rurl,
+      "body" => $body
+    ];
+  }
+
+  function doAll() {
+    try {
+      $headers = [
+        "Content-Type: application/json"
+      ];
+      $queries = [];
+      array_push($queries, buildBatch("POST", "graphql", "q=node(".gid."){name}"));
+      foreach ($GLOBALS['DOC_IDS'] as $doc_name => $doc_id) {
+        $data = buildBatch(
+          "POST",
+          "graphql", 
+          "variables=". json_encode(makeQuery(time()-$GLOBALS['ONE_DAY']*30, time())) ."&doc_id=". $doc_id
+        );
+        array_push($queries, $data);
+      }
+      $data = json_decode(getData($queries, $headers),1);
+      $full['group_name'] = json_decode($data[0]["body"],1)[gid]["name"];
+      $i = 0;
+      foreach ($GLOBALS['DOC_IDS'] as $doc_name => $doc_id) {
+        $i++;
+        $full[$doc_name] = json_decode($data[$i]["body"],1)['data']['group']['group_insights'];
+      }
+      $full['last_update'] = time();
+      return json_encode($full);
+    }
+    catch (Exception $e) {
+      return 0;
+    }
+  }
+
+  if (isset($_GET['action'])) {
+    $action = $_GET['action'];
+    if ($action = 'getData') {
+    	echo doAll();
+    	exit;
+    }
+  }
+
+  ?>
+
 <!DOCTYPE html>
 <html lang="en">
   <head>
