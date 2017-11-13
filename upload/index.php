@@ -14,7 +14,7 @@
     "engagement" => "1470044149684839",
     "member" => "1554851827859432",
     "growth" => "1761498670534891",
-    "highlights" => "1378499845591554"
+    // "highlights" => "1378499845591554"
   ];
 
   function request($url = '', $headers = [] , $params = [], $post = 0)    {
@@ -84,6 +84,22 @@
         $i++;
         $full[$doc_name] = json_decode($data[$i]["body"],1)['data']['group']['group_insights'];
       }
+
+      // Keep needed fields
+      $full['member'] = ['top_contributors_breakdown' => $full['member']['top_contributors_breakdown']];
+      $full['growth'] = [
+        'pending_member_current_count' => $full['growth']['pending_member_current_count'],
+        'total_member_count' => $full['growth']['total_member_count']
+      ];
+      $full['engagement'] = [
+        'top_posts_breakdown' => $full['engagement']['top_posts_breakdown'],
+        'active_member_count' => $full['engagement']['active_member_count'],
+        'total_comment_count' => $full['engagement']['total_comment_count'],
+        'total_post_count' => $full['engagement']['total_post_count'],
+        'total_like_count' => $full['engagement']['total_like_count'],
+      ];
+      //
+
       $full['last_update'] = time();
       return json_encode($full);
     }
