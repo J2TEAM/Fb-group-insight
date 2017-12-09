@@ -4,11 +4,11 @@ rankData = new Vue({
     full: null,
     badges: [
       "ChallengerBadge.png",
-      "GoldBadgeSeason.png",
+      "MasterBadge.png",
       "DiamondBadge.png",
       "PlatinumBadgeSeason.png",
+      "GoldBadgeSeason.png",
       "SilverBadgeSeason.png",
-      "MasterBadge.png",
       "BronzeBadgeSeason.png",
       "UnrankedBadge.png",
     ],
